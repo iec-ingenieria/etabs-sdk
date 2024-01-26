@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "etabs-sdk"
+version = "0.1.0"
+description = "SDK para gestionar las comunicaciones con la API de Etabs con Python"
+authors = [
+    {name = "Matías Glasner Vivanco", email = "mglasner@iec.cl"},
+]
+readme = "README.md"
+
+dependencies = [
+    "comtypes==1.2.1"
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "mypy"]
+
+[project.urls]
+repository = "https://github.com/iec-ingenieria/etabs-sdk"
+
+[tool.mypy]
+  files                       = "**/*.py"
+  check_untyped_defs          = true
+  disallow_untyped_defs       = true
+  disallow_incomplete_defs    = true
+  disallow_untyped_decorators = true
+  warn_return_any             = true
+  warn_unused_ignores         = true
+  no_implicit_optional        = true
+  show_error_codes            = true
+
+[tool.ruff]
+  line-length = 120
+  target-version = "py311"
+  fix = true
+  unfixable = [
+    "F401", # unused-import
+    "F841" # unused-variable
+    ]
+  ignore = ["E711", "E712", "N805", "PLR0913"]
+  select = [
+    "F", # Pyflakes
+    "E", # Pycodestyle
+    "W", # Pycodestyle
+    "I", # isort
+    "B", # flake8-bugbear
+    "Q", # flake8-quotes
+    "D", # pydocstyle
+    "N", # pep8-naming
+    "UP", # pyupgrade
+    "PL", # Pylint
+  ]
+
+[tool.ruff.pydocstyle]
+  convention = "google"
+
+[tool.ruff.mccabe]
+  # Flag errors (`C901`) whenever the complexity level exceeds 5.
+  max-complexity = 5
