@@ -1,7 +1,6 @@
 """Etabs api."""
 
 import contextlib
-from ctypes import ArgumentError
 from pathlib import Path
 from typing import Any
 
@@ -9,15 +8,21 @@ import comtypes
 import comtypes.client
 from tabulate import tabulate
 
-from .enums import LoadPatternType, Unidades
+from .enums import CasoOCombinacion, LoadPatternType, TipoDeCombinacion, Unidades
 from .excepciones import InstanciaActivaNoEncontradaError, ModeloNoEncontradoError, NuevoModeloError
 
 
 class Etabs:
     """Maneja la comunicación con la API de Etabs."""
 
-    def __init__(self, cerrar_intancia_abierta: bool = False, adjuntar_a_instancia: bool = False) -> None:
+    def __init__(self, cerrar_intancia_abierta: bool | None = None, adjuntar_a_instancia: bool | None = None) -> None:
         """Método init para la case Etabs."""
+        if cerrar_intancia_abierta is None:
+            cerrar_intancia_abierta = False
+
+        if adjuntar_a_instancia is None:
+            adjuntar_a_instancia = False
+
         self.etabs_object = self._conectar_etabs(cerrar_intancia_abierta, adjuntar_a_instancia)
         self.model = self.etabs_object.SapModel
 
@@ -236,3 +241,14 @@ class Etabs:
         except Exception as error:
             # sourcery skip: raise-specific-error
             raise Exception from error
+
+    def agregar_combinacion(
+        self,
+        nombre_combinacion: str,
+        tipo_de_combinacion: TipoDeCombinacion,
+        estados_de_carga: list[tuple[str, float, CasoOCombinacion]],
+    ) -> None:
+        """Agregar una nueva combinacion de cargas."""
+        self.model.RespCombo.Add(nombre_combinacion, tipo_de_combinacion)
+        for nombre_ec, factor, tipo in estados_de_carga:
+            self.model.RespCombo.SetCaseList(nombre_combinacion, tipo, nombre_ec, factor)

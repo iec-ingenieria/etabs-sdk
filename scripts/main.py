@@ -3,21 +3,22 @@
 import sys
 from pathlib import Path
 
+
 sys.path.append(str(Path(__file__).parent.parent))
 
 from etabs_sdk import Etabs  # noqa: I001
-from etabs_sdk import LoadPatternType
+from etabs_sdk import LoadPatternType, TipoDeCombinacion, CasoOCombinacion
 
-# path = Path("C:\\Users\\User\\Desktop\\Modelo en trabajo\\test.EDB")
-# path2 = Path("C:\\Users\\User\\Desktop\\Modelo en trabajo\\test123.EDB")
-
+path = Path(r"C:\Users\User\Google Drive\software\iec\etabs-sdk\edificio_prueba\test.EDB")
 etabs = Etabs(adjuntar_a_instancia=True)
-columnas_tabla = etabs.columnas_tabla("Area Assignments - Pier Labels", printable=True)
-datos_tabla = etabs.datos_tabla("Area Assignments - Pier Labels")
-print(datos_tabla)
+etabs.abrir_modelo(path=Path())
 
-etabs.add_load_pattern("Dead", LoadPatternType.LIVE)
+# etabs.add_load_pattern("PP", LoadPatternType.DEAD, multiplier=1)
+# etabs.add_load_pattern("SC", LoadPatternType.LIVE)
 
-# etabs.abrir_modelo(path)
-# etabs.cerrar_modelo()
-# etabs = Etabs(modelo_nuevo=True)
+# etabs.agregar_combinacion("C01", [("PP", "SC"), (1.4, 0.9)])
+etabs.agregar_combinacion(
+    "C02",
+    TipoDeCombinacion.ABSOLUTE_ADDITIVE,
+    [("PP", 0.99, CasoOCombinacion.LOAD_CASE), ("C01", 2.9, CasoOCombinacion.LOAD_COMBO)],
+)

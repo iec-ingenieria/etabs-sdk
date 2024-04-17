@@ -160,3 +160,4 @@ cython_debug/
 
 dist/
 secrets.txt
+edificio_prueba/

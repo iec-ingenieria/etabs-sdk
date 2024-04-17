@@ -30,3 +30,20 @@ class LoadPatternType(IntEnum):
     DEAD = 1
     SUPER_DEAD = 2
     LIVE = 3
+
+
+class TipoDeCombinacion(IntEnum):
+    """Tipos de combinaciones."""
+
+    LINEAR_ADDITIVE = 0
+    ENVELOPE = 1
+    ABSOLUTE_ADDITIVE = 2
+    SRSS = 3
+    RANGE_ADDITIVE = 4
+
+
+class CasoOCombinacion(IntEnum):
+    """Load case o combination."""
+
+    LOAD_CASE = 0
+    LOAD_COMBO = 1
