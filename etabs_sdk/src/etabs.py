@@ -200,3 +200,6 @@ class Etabs:
             "columnas": datos[0],
             "valores": tuple(datos[4][col::ncol] for col in range(ncol)),
         }
+
+    def obtener_reacciones(self):
+        """Obtiene las reacciones desde etabs."""

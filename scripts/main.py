@@ -1,7 +1,7 @@
 """Main."""
 from pathlib import Path
 
-from etabs_sdk import Etabs
+from etabs_sdk.src import Etabs
 
 # path = Path("C:\\Users\\User\\Desktop\\Modelo en trabajo\\test.EDB")
 # path2 = Path("C:\\Users\\User\\Desktop\\Modelo en trabajo\\test123.EDB")
