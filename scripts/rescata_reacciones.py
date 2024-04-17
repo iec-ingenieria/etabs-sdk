@@ -1,5 +1,6 @@
 """Script para rescatar las reacciones desde un modelo etabs a un archivo excel."""
-from etabs_sdk.src import Etabs
+
+from etabs_sdk import Etabs
 
 # def obtener_conexion() -> None:
 #     """Funcion para gestionar la conexcion con etabs."""

@@ -1,5 +1,6 @@
 """Enums del proyecto."""
-from enum import Enum
+
+from enum import Enum, IntEnum
 
 
 class Unidades(Enum):
@@ -21,3 +22,11 @@ class Unidades(Enum):
     KGF_CM_C = 14
     N_CM_C = 15
     TON_CM_C = 16
+
+
+class LoadPatternType(IntEnum):
+    """Load patterns types."""
+
+    DEAD = 1
+    SUPER_DEAD = 2
+    LIVE = 3

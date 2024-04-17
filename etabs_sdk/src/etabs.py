@@ -1,5 +1,7 @@
 """Etabs api."""
+
 import contextlib
+from ctypes import ArgumentError
 from pathlib import Path
 from typing import Any
 
@@ -7,7 +9,7 @@ import comtypes
 import comtypes.client
 from tabulate import tabulate
 
-from .enums import Unidades
+from .enums import LoadPatternType, Unidades
 from .excepciones import InstanciaActivaNoEncontradaError, ModeloNoEncontradoError, NuevoModeloError
 
 
@@ -201,5 +203,36 @@ class Etabs:
             "valores": tuple(datos[4][col::ncol] for col in range(ncol)),
         }
 
-    def obtener_reacciones(self):
-        """Obtiene las reacciones desde etabs."""
+    def add_load_pattern(
+        self,
+        name: str,
+        load_pattern_type: LoadPatternType,
+        multiplier: float | None = None,
+        add_case: bool | None = None,
+    ) -> None:
+        """Add new load pattern to model.
+
+        Args:
+            name (str): Name of the load pattern
+            load_pattern_type (LoadPatternType): Load Pattern type
+            multiplier (float | None, optional): Load Pattern multiplier. Defaults to 0.
+            add_case (bool | None, optional): Flag for adding Load Case. Defaults to True.
+
+        Raises:
+            ValueError:If load pattern culd not be added
+            Exception: If an unkwnown exception ocurrs
+        """
+        if multiplier is None:
+            multiplier = 0
+
+        if add_case is None:
+            add_case = True
+
+        try:
+            value = self.model.LoadPatterns.Add(name, load_pattern_type, multiplier, add_case)
+            if value != 0:
+                raise ValueError(f"The load pattern could not be added: {name}")
+
+        except Exception as error:
+            # sourcery skip: raise-specific-error
+            raise Exception from error
